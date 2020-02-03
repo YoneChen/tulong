@@ -13,10 +13,10 @@ const { VueLoaderPlugin } = require('vue-loader');
 
 module.exports = merge(baseWebpackConfig, {
     mode: 'production',
-    output: {
-        filename: 'js/[name].[chunkhash].js',
-        chunkFilename: 'js/[id].[chunkhash].js'
-	},
+    // output: {
+    //     filename: 'js/[name].[chunkhash].js',
+    //     chunkFilename: 'js/[id].[chunkhash].js'
+	// },
     plugins: [
         new VueLoaderPlugin(),
         // http://vuejs.github.io/vue-loader/en/workflow/production.html
@@ -47,7 +47,7 @@ module.exports = merge(baseWebpackConfig, {
         // you can customize output by editing /index.html
         // see https://github.com/ampedandwired/html-webpack-plugin
         new HtmlWebpackPlugin({
-            title: '图刀',
+            title: '图龙',
             filename: 'index.html',
             template: 'src/index.html',
             minify: {

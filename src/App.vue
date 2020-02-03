@@ -30,6 +30,5 @@ html,body,#app {
 }
 .container {
     flex: 1;
-    background-color: #000028;
 }
 </style>

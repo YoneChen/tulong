@@ -12,6 +12,14 @@ module.exports = merge(baseWebpackConfig, {
         port: 9003,
         hot: true,
         contentBase: path.join(__dirname, '../dist'),
+        historyApiFallback: {
+          rewrites: [
+            {
+              from: /.*/,
+              to: '/index.html'
+            }
+          ]
+        },
     },
     plugins: [
         new VueLoaderPlugin(),

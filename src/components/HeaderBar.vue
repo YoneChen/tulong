@@ -5,7 +5,8 @@
 .header {
     display: flex;
     height: 72px;
-    background-color: #111139;
-    color: #fff;
+    background-color: #F7F7F7;
+    border-bottom: solid 1px #d0d0d0;
+    color: #666;
 }
 </style>
