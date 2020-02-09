@@ -6,9 +6,23 @@ const actions = {
     async uploadUIImage({commit,state}, data) {
         try {
             const res = await postData(API.POST_UPLOAD,data);
-            commit('setUIImgUrl',res.url);
+            commit('setUIImgUrl',res.data.url);
+            return res;
         } catch (error) {
+            throw error;
+        }
+    },
+    async extract({commit,state}, data) {
+        try {
+            const res = await postData(API.POST_EXTRACT,data);
+            if (res.code == "00000") {
+                commit('addExtractImg',{ ...res.data });
+            } else {
+
+            }
             
+        } catch (error) {
+            throw error;
         }
     }
 }

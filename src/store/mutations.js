@@ -1,10 +1,10 @@
 
 const mutations = {
-    setUIImgUrl(state,val) {
-        state.uiImgUrl = val;
+    setArtboardImgUrl(state,val) {
+        state.artboardImgUrl = val;
     },
-    addCutImg(state,val) {
-        state.cutImgList.push(val);
+    addExtractImg(state,val) {
+        state.extractImgList.push(val);
     },
 }
 export default mutations;

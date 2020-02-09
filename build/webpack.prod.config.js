@@ -21,7 +21,7 @@ module.exports = merge(baseWebpackConfig, {
         new VueLoaderPlugin(),
         // http://vuejs.github.io/vue-loader/en/workflow/production.html
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('production')
+            'NODE_ENV': JSON.stringify('production')
         }),
         new CleanWebpackPlugin(['dist'], {
             root: path.resolve(__dirname, '..')

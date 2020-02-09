@@ -10,7 +10,8 @@ import App from './App'
 Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(Upload);
-Vue.use(Message);
+Vue.component(Message.name,Message);
+Vue.prototype.$message = Message;
 const router = new VueRouter({
     mode: "history",
     routes: routers
