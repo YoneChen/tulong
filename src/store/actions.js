@@ -1,4 +1,5 @@
 import { postData,getData } from '@/common/net'
+import { Message as $message } from 'element-ui';
 import API from '@/api'
 // 公共请求
 const actions = {
@@ -12,18 +13,36 @@ const actions = {
             throw error;
         }
     },
-    async extract({commit,state}, data) {
+    async extract({commit,state,dispatch}, data) {
         try {
             const res = await postData(API.POST_EXTRACT,data);
-            if (res.code == "00000") {
-                commit('addExtractImg',{ ...res.data });
-            } else {
-
-            }
+            dispatch('addImgTargetList',res.data.out_rects);
             
         } catch (error) {
-            throw error;
+            if (error.code) {
+
+            } else {
+                $message({
+                    message: '服务异常，请稍后再试！',
+                    type: 'error'
+                });
+                throw error;
+            }
+            
         }
+    },
+    
+    async focusImgTarget({commit,state}, id) {
+        commit('setCurrentImgId', id);
+
+    },
+    addImgTargetList({commit,state}, data) {
+        const list = [...state.extractImgList, ...data];
+        commit('setExtractImgList', list);
+    },
+    removeImgTarget({commit,state}, id) {
+        const list = state.extractImgList.filter(item => item.id != id);
+        commit('setExtractImgList', list);
     }
 }
 

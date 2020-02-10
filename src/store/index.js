@@ -11,7 +11,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
       artboardImgUrl: null, // 设计稿图片
-      extractImgList: [] // 抠图列表
+      extractImgList: [], // 抠图列表
+      currentImgId: null // 选中元素
   },
   plugins: [createPersistedState({
       storage: window.sessionStorage,
@@ -22,7 +23,11 @@ export default new Vuex.Store({
     	}
 	 }
   })],
-  getters: {},
+  getters: {
+    currentImg: state => {
+      return state.extractImgList.find(val => val.id == state.currentImgId);
+    }
+  },
   actions,
   mutations,
   modules: {

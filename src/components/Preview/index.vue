@@ -1,22 +1,39 @@
 <template>
-    <div class="preview-wrap" @mousedown="handleMouseDown" @mousemove="handleMouseMove" @mouseup="handleMouseUp">
-        <artboard :artboardImg="artboardImg" :width="artboardImg.width" :height="artboardImg.height" class="artboard"/>
-        <div v-show="selectFrame.show" class="select-box" :style="{
-            left: frame.x*2 + 'px',
-            top: frame.y*2 + 'px',
-            width: frame.w*2 + 'px',
-            height: frame.h*2 + 'px',
+    <div class="preview-wrap"
+        @mousedown="handleMouseDown"
+        @mousemove="handleMouseMove"
+        @mouseup="handleMouseUp"
+        :style="{
+            height: artboardImg.height*scale + 'px'
+        }"
+        >
+        <artboard :artboardImg="artboardImg"
+            :extractImgList="extractImgList"
+            :currentImgId="currentImgId"
+            :width="artboardImg.width*scale"
+            :height="artboardImg.height*scale"
+            class="artboard"/>
+        <div v-show="showSelectFrame" class="select-box" :style="{
+            left: frame.x*scale + 'px',
+            top: frame.y*scale + 'px',
+            width: frame.w*scale + 'px',
+            height: frame.h*scale + 'px',
         }"></div>
     </div>
     
 </template>
 <script>
 import Artboard from './Artboard'
+import { mapState, mapMutations } from 'vuex'
+const SCALE = .5;
+const TH = 5
 export default {
     data() {
         return {
+            scale: SCALE,
+            showSelectFrame: false,
+            showLocateFrame: false,
             selectFrame: {
-                show: false,
                 sx: 0,
                 sy: 0,
                 ex: 0,
@@ -33,20 +50,27 @@ export default {
         Artboard,
     },
     computed: {
+        ...mapState(['extractImgList','currentImgId']),
         frame() {
-            const {sx,sy,ex,ey} = this.selectFrame;
+            const {scale,selectFrame} = this;
+            const {sx,sy,ex,ey} = selectFrame;
             const x = Math.min(sx,ex), y = Math.min(sy,ey);
             return {
-                x,
-                y,
-                w: Math.max(sx,ex) - x,
-                h: Math.max(sy,ey) - y,
+                x: x / scale,
+                y: y / scale,
+                w: (Math.max(sx,ex) - x) / scale,
+                h: (Math.max(sy,ey) - y) / scale,
             }
+        },
+        checkFrame() {
+            return this.frame.w > TH && this.frame.h > TH
         }
     },
     methods: {
+        ...mapMutations(['setCurrentImgId']),
         handleMouseDown(e) {
-            this.selectFrame.show = false
+            this.setCurrentImgId(null);
+            this.showSelectFrame = false;
             this.mouseControl.down = true;
             const [offsetX, offsetY] = _getOffset(e);
             this.selectFrame.sx = offsetX;
@@ -58,37 +82,41 @@ export default {
             const [offsetX, offsetY] = _getOffset(e);
             this.selectFrame.ex = offsetX;
             this.selectFrame.ey = offsetY;
-            this.selectFrame.show = true
+            this.showSelectFrame = true;
         },
         handleMouseUp(e) {
-            if (this.mouseControl.move) {
-                this.mouseControl.move = false;
+            if (this.mouseControl.move && this.checkFrame) {
                 this.$emit('chooseArea', {
                     frame: this.frame
                 });
-            } else {
-                this.selectFrame.show = false;
             }
+            this.mouseControl.move = false;
+            this.showSelectFrame = false;
             this.mouseControl.down = false;
         },
     },
 }
 const _getOffset = e => {
-    const rect = e.currentTarget.getBoundingClientRect(),
-        offsetX = e.clientX - rect.left,
+    const rect = e.currentTarget.getBoundingClientRect();
+    let offsetX = e.clientX - rect.left,
         offsetY = e.clientY - rect.top;
+    // let boundRight = rect.width + rect.left,
+    //     boundBottom = rect.height + rect.top;
+    // offsetX = offsetX < 0 ?  0 : offsetX;
+    // offsetY = offsetY < 0 ?  0 : offsetY;
+    // offsetX = offsetX > boundRight ?  boundRight : offsetX;
+    // offsetY = offsetY > boundBottom ?  boundBottom : offsetY;
     return [offsetX, offsetY]
 }
 </script>
 <style lang="scss">
 .preview-wrap {
     position: relative;
-    transform: scale(.5);
-    transform-origin: top;
 }
 .select-box {
     position: absolute;
-    border: solid 1px #00aadd;
+    border: solid 2px #00aadd;
     background-color: rgba(#00aadd, .1);
+    // box-sizing: border-box;
 }
 </style>

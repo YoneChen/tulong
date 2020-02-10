@@ -20,7 +20,7 @@ export default {
 </script>
 
 <style>
-@import './css/common.scss';
+@import './assets/css/common.scss';
 html,body,#app {
     height: 100%;
 }

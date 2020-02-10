@@ -1,5 +1,5 @@
 import axios from 'axios';
-axios.defaults.timeout = 5000;
+axios.defaults.timeout = 15000;
 axios.defaults.withCredentials = true;
 async function postData(url, data = null) {
     // commit('fetch_loading', { name });

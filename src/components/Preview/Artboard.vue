@@ -1,5 +1,10 @@
 <template>
-    <canvas class="artboard-wrap" ref="artboardCanvas" :width="width" :height="height"></canvas>
+    <canvas class="artboard-wrap" ref="artboardCanvas"
+        :style="{
+            width: width + 'px',
+            height: height + 'px'
+        }"
+        :width="width * 2" :height="height * 2"></canvas>
 </template>
 <script>
 export default {
@@ -9,7 +14,7 @@ export default {
             ctx: null
         }
     },
-    props: ['width','height','artboardImg'],
+    props: ['width','height','artboardImg','extractImgList','currentImgId'],
     mounted() {
         this.canvas = this.$refs.artboardCanvas;
         this.initCanvas();
@@ -19,6 +24,14 @@ export default {
     updated() {
         this.updateCanvas();
     },
+    watch: {
+        extractImgList() {
+            this.updateCanvas();
+        },
+        currentImgId() {
+            this.updateCanvas();
+        }
+    },
     methods: {
         initCanvas() {
         },
@@ -27,20 +40,29 @@ export default {
             ctx.drawImage(artboardImg,0,0,width,height);
         },
         drawFrames() {
-            const {ctx,frames} = this;
-            if (!frames.length) return;
-            frames.forEach(({x,y,w,h}) => {
-                ctx.strokeRect(x,y,w,h);
-                ctx.strokeStyle = "#00aadd";
+            const {ctx,extractImgList,currentImgId} = this;
+            if (!extractImgList.length) return;
+            extractImgList.forEach(({x,y,w,h,id}) => {
+                if (id == currentImgId) {
+                    ctx.strokeStyle = "#00aadd";
+                    ctx.lineWidth = 2;
+                } else {
+                    ctx.strokeStyle = "#888";
+                    ctx.lineWidth = 1;
+                }
+                ctx.strokeRect(x * .5, y * .5, w * .5, h * .5);
             })
         },
         updateCanvas() {
             console.log('canvas updated');
             const {ctx,width,height} = this;
             if (!ctx) return;
+            ctx.save();
+            ctx.scale(2, 2);
             ctx.clearRect(0,0,width,height);
             this.drawArtboard();
-            // this.drawFrames();
+            this.drawFrames();
+            ctx.restore();
         }
     }
 }

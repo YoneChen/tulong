@@ -6,7 +6,6 @@
         drag
         accept="image/*"
         :action="API.POST_UPLOAD"
-        :on-preview="handlePreview"
         :on-error="handleError"
         :on-success="forward">
         <i class="el-icon-upload"></i>
