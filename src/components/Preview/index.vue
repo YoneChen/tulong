@@ -24,7 +24,7 @@
 </template>
 <script>
 import Artboard from './Artboard'
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 const SCALE = .5;
 const TH = 5
 export default {
@@ -67,9 +67,7 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['setCurrentImgId']),
         handleMouseDown(e) {
-            this.setCurrentImgId(null);
             this.showSelectFrame = false;
             this.mouseControl.down = true;
             const [offsetX, offsetY] = _getOffset(e);

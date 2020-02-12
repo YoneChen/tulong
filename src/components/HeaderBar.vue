@@ -10,14 +10,14 @@
         :action="API.POST_UPLOAD"
         :on-error="handleError"
         :on-success="forward">
-        <el-button size="small" type="primary">重新上传</el-button>
+        <el-button>重新上传</el-button>
         </el-upload>
     </header>
 </template>
 <script>
 
 import API from '@/api'
-import { mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
     data()  {
         return {
@@ -25,9 +25,10 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['setArtboardImgUrl']),
+        ...mapActions(['initArtboard']),
         forward(res,file) {
-            this.setArtboardImgUrl(res.data.url)
+
+            this.initArtboard(res.data.url);
             this.$router.go();
         },
         handleError() {

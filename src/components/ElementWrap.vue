@@ -1,6 +1,6 @@
 <template> 
     <div class="element-wrap">
-        <div class="title-wrap">当前项目</div>
+        <h3 class="title-wrap">当前项目</h3>
         <div class="element-list">
             <li class="element-row" v-for="(extractImg, idx) in extractImgList"
                 :class="currentImgId == extractImg.id ? 'chosen' : ''"
@@ -9,11 +9,13 @@
                 @mouseout="handleItemMouseOut(idx)"
                 :key="idx">
                 <div class="item-box row">
-                    <i :style="{ backgroundImage: `url(${extractImg.url})`}"></i>
-                    <span>图片</span>
+                    <div class="icon">
+                        <i :style="{ backgroundImage: `url(${extractImg.url})`}"></i>
+                    </div>
+                    <span>{{extractImg.name}}</span>
                 </div>
                 <div v-show="hoverList[idx]"
-                    @click="handleRemoveClick(extractImg.id)"
+                    @click.stop="handleRemoveClick(extractImg.id)"
                     class="remove-btn">×</div>
             </li>
         </div>
@@ -49,7 +51,8 @@ export default {
             // this.hoverList[idx] = false;
         },
         handleRemoveClick(id) {
-            this.removeImgTarget(id)
+            this.removeImgTarget(id);
+            this.focusImgTarget(null);
         }
 
     }
@@ -65,11 +68,6 @@ export default {
         overflow: hidden;
         background-color: #F7F7F7;
         border-right: solid 1px #d0d0d0;
-        .title-wrap {
-            padding: 12px;
-            border-bottom: solid 1px #ddd;
-            color: #666;
-        }
     }
     .element-list {
         flex: 1;
@@ -90,15 +88,26 @@ export default {
         }
     }
     .item-box {
-        > i {
+        color: #666;
+        .icon {
+            position: relative;
             width: 48px;
             height: 48px;
-            display: block;
-            background-position: center;
-            background-size: contain;
-            background-repeat: no-repeat;
+            background-size: cover;
+            background-image: url(../assets/img/icon-bg.png);
             border: solid 1px #d0d0d0;
             margin-right: 8px;
+            > i {
+                position: absolute;
+                left: 0;
+                top: 0;
+                display: block;
+                width: 100%;
+                height: 100%;
+                background-position: center;
+                background-size: contain;
+                background-repeat: no-repeat;
+            }
         }
     }
     .remove-btn {

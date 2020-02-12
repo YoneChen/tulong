@@ -16,7 +16,7 @@
 </template>
 <script>
 import API from '@/api'
-import { mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
     data() {
         return {
@@ -28,9 +28,9 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['setArtboardImgUrl']),
+        ...mapActions(['initArtboard']),
         forward(res,file) {
-            this.setArtboardImgUrl(res.data.url)
+            this.initArtboard(res.data.url)
             this.$router.push({ path: 'platform' });
         },
         handlePreview(file) {

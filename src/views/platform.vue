@@ -6,13 +6,11 @@
                 :artboardImg="artboardImg"
                 @chooseArea="handleChooseArea"/>
         </div>
-        <div class="attr-wrap">
-            
-        </div>
+        <attribute-panel/>
     </div>
 </template>
 <script>
-import { ElementWrap, Preview} from '@/components'
+import { ElementWrap, Preview, AttributePanel } from '@/components'
 import { mapState, mapActions } from 'vuex'
 export default {
     data() {
@@ -22,8 +20,9 @@ export default {
         }
     },
     components: {
-        Preview,
         ElementWrap,
+        Preview,
+        AttributePanel
     },
     created() {
         this.loadImg();
@@ -68,11 +67,5 @@ export default {
         flex: 1;
         height: 100%;
         background-color: #E4E4E4;
-    }
-    .attr-wrap {
-        width: 300px;
-        height: 100%;
-        background-color: #F7F7F7;
-        border-left: solid 1px #d0d0d0;
     }
 </style>

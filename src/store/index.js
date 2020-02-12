@@ -20,6 +20,7 @@ export default new Vuex.Store({
       	return {
       	// 只储存state中的artboardImgUrl
         artboardImgUrl: val.artboardImgUrl,
+        extractImgList: val.extractImgList
     	}
 	 }
   })],

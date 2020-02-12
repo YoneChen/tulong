@@ -7,11 +7,15 @@ const actions = {
     async uploadUIImage({commit,state}, data) {
         try {
             const res = await postData(API.POST_UPLOAD,data);
-            commit('setUIImgUrl',res.data.url);
+            commit('artboardImgUrl',res.data.url);
             return res;
         } catch (error) {
             throw error;
         }
+    },
+    initArtboard({commit,state}, url) {
+        commit('setArtboardImgUrl',url);
+        commit('setExtractImgList',[]);
     },
     async extract({commit,state,dispatch}, data) {
         try {
@@ -32,12 +36,12 @@ const actions = {
         }
     },
     
-    async focusImgTarget({commit,state}, id) {
+    focusImgTarget({commit,state}, id) {
         commit('setCurrentImgId', id);
 
     },
     addImgTargetList({commit,state}, data) {
-        const list = [...state.extractImgList, ...data];
+        const list = [...data, ...state.extractImgList];
         commit('setExtractImgList', list);
     },
     removeImgTarget({commit,state}, id) {
