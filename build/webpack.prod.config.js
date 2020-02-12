@@ -6,26 +6,25 @@ const baseWebpackConfig = require('./webpack.base.config.js');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
+// const CopyPlugin = require('copy-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
 
 module.exports = merge(baseWebpackConfig, {
     mode: 'production',
-    // output: {
-    //     filename: 'js/[name].[chunkhash].js',
-    //     chunkFilename: 'js/[id].[chunkhash].js'
-	// },
+    output: {
+        path: path.join(__dirname, "../dist"),
+        filename: 'js/[name].[chunkhash].js',
+        chunkFilename: 'js/[id].[chunkhash].js'
+    },
     plugins: [
         new VueLoaderPlugin(),
         // http://vuejs.github.io/vue-loader/en/workflow/production.html
         new webpack.DefinePlugin({
             'NODE_ENV': JSON.stringify('production')
         }),
-        new CleanWebpackPlugin(['dist'], {
-            root: path.resolve(__dirname, '..')
-        }),
+        new CleanWebpackPlugin(),
         new UglifyJsPlugin({
             uglifyOptions: {
                 warnings: false
@@ -47,7 +46,7 @@ module.exports = merge(baseWebpackConfig, {
         // you can customize output by editing /index.html
         // see https://github.com/ampedandwired/html-webpack-plugin
         new HtmlWebpackPlugin({
-            title: '图龙',
+            title: 'tulong',
             filename: 'index.html',
             template: 'src/index.html',
             minify: {

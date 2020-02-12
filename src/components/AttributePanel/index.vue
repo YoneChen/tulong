@@ -29,14 +29,22 @@
                 <el-button size="small" @click="handleStyleDetectClick">样式检测</el-button>
             </div>
             <template v-else>
-                <div class="attr-row">
-                    
+                <!-- 圆角样式 -->
+                <div class="attr-row" v-if="currentImg.style.borderRadius">
+                    <attr-box name="圆角"></attr-box>
+                    <attr-box v-for="(val, idx) in currentImg.style.borderRadius" :key="idx">{{val}}</attr-box>
+                </div>
+                <!-- 边框样式 -->
+                <div class="attr-row" v-if="currentImg.style.borderWidth">
+                    <attr-box name="边框"></attr-box>
+                    <attr-box>{{currentImg.style.borderWidth}}</attr-box>
+                    <attr-box type="color">{{currentImg.style.borderColor}}</attr-box>
                 </div>
             </template>
         </section>
         <section>
             <h4 class="subtitle-wrap">字体</h4>
-            <div v-if="!currentImg.text_style" class="attr-row">
+            <div v-if="!currentImg.textStyle" class="attr-row">
                 <el-button disabled size="small" @click="handleTextStyleDetectClick">文字检测（待开放）</el-button>
             </div>
             <template v-else>

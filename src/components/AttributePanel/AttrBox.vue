@@ -1,6 +1,6 @@
 <template>  
     <div class="attr-box">
-        <span class="attr-name">{{name}}:</span>
+        <span v-if="name" class="attr-name">{{name}}:</span>
         <span class="attr-val"><slot/></span>
     </div>
 </template>
